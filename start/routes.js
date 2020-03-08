@@ -1,4 +1,4 @@
-'use strict'
+"use strict";
 
 /*
 |--------------------------------------------------------------------------
@@ -14,8 +14,18 @@
 */
 
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
-const Route = use('Route')
+const Route = use("Route");
 
-Route.get('/', () => {
-  return { greeting: 'Hello world in JSON' }
-})
+Route.get("/", async () => {
+  return {
+    greeting: "Hello world in JSON",
+    person: await use("Faker").random(1)
+  };
+});
+
+Route.resource("courses", "CourseController").except([
+  "create",
+  "destroy",
+  "update",
+  "edit"
+]);
