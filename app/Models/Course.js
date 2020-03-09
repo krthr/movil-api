@@ -7,6 +7,10 @@ class Course extends Model {
   professor() {
     this.hasOne("App/Models/Professor");
   }
+
+  students() {
+    this.hasMany("App/Models/Student");
+  }
 }
 
 module.exports = Course;
