@@ -18,14 +18,18 @@ const Route = use("Route");
 
 Route.get("/", async () => {
   return {
-    greeting: "Hello world in JSON",
-    person: await use("Faker").random(1)
+    greeting: "Hello world in JSON"
   };
 });
 
-Route.resource("courses", "CourseController").except([
-  "create",
-  "destroy",
-  "update",
-  "edit"
-]);
+Route.group("", () => {
+  Route.get("/", () => {
+    return use("Faker").random();
+  });
+
+  Route.get("restart", () => {
+    return {
+      result: true
+    };
+  });
+}).prefix(":dbId");

@@ -1,7 +1,6 @@
 "use strict";
 
 const { ServiceProvider } = require("@adonisjs/fold");
-const axios = require("axios").default;
 
 class FakerProvider extends ServiceProvider {
   /**
@@ -12,15 +11,11 @@ class FakerProvider extends ServiceProvider {
    * @return {void}
    */
   register() {
-    this.app.singleton("Faker", () => ({
-      async random(n = 1) {
-        const { results } = await axios
-          .get(`https://randomuser.me/api?results=${n}`)
-          .then(r => r.data);
+    this.app.singleton("Faker", () => {
+      const a = require("./index");
 
-        return results.slice(0, n);
-      }
-    }));
+      return new a();
+    });
   }
 
   /**
