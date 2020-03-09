@@ -19,7 +19,11 @@ class CourseController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index({ request, response, view }) {}
+  async index({ request, response, view }) {
+    const { page = 1 } = request.get();
+    const courses = await Course.query().paginate(page);
+    return courses;
+  }
 
   /**
    * Create/save a new course.

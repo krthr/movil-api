@@ -32,4 +32,10 @@ Route.group("", () => {
       result: true
     };
   });
+
+  Route.resource("courses", "CourseController").only([
+    "index",
+    "store",
+    "show"
+  ]);
 }).prefix(":dbId");
