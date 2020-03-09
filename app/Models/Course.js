@@ -2,6 +2,7 @@
 
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Model = use("Model");
+const Faker = use("Faker");
 
 class Course extends Model {
   professor() {
@@ -10,6 +11,14 @@ class Course extends Model {
 
   students() {
     this.hasMany("App/Models/Student");
+  }
+
+  static boot() {
+    super.boot();
+
+    this.addHook("beforeCreate", course => {
+      course.name = Faker.getRandomName();
+    });
   }
 }
 
