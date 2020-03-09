@@ -4,6 +4,7 @@
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
+const NotFoundException = use("App/Exceptions/NotFoundException");
 const Course = use("App/Models/Course");
 
 /**
@@ -17,11 +18,15 @@ class CourseController {
    * @param {object} ctx
    * @param {Request} ctx.request
    * @param {Response} ctx.response
-   * @param {View} ctx.view
    */
-  async index({ request, response, view }) {
+  async index({ params, request, response }) {
+    const { dbId } = params;
     const { page = 1 } = request.get();
-    const courses = await Course.query().paginate(page);
+
+    const courses = await Course.query()
+      .where("db_id", dbId)
+      .paginate(page);
+
     return courses;
   }
 
@@ -33,7 +38,17 @@ class CourseController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store({ request, response }) {}
+  async store({ request, response }) {
+    const { dbId } = request.params;
+    const { name } = request.post();
+
+    const course = await Course.create({
+      db_id: dbId,
+      name
+    });
+
+    return course;
+  }
 
   /**
    * Display a single course.
@@ -42,9 +57,21 @@ class CourseController {
    * @param {object} ctx
    * @param {Request} ctx.request
    * @param {Response} ctx.response
-   * @param {View} ctx.view
    */
-  async show({ params, request, response, view }) {}
+  async show({ params, request, response }) {
+    const { dbId, id } = params;
+
+    const course = await Course.query()
+      .where("id", id)
+      .where("db_id", dbId)
+      .first();
+
+    if (!course) {
+      throw new NotFoundException();
+    }
+
+    return course;
+  }
 }
 
 module.exports = CourseController;
