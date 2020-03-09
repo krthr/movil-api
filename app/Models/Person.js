@@ -9,7 +9,7 @@ class Person extends Model {
   static boot() {
     super.boot();
 
-    this.addHook("beforeCreate", async person => {
+    this.addHook("beforeCreate", person => {
       const {
         name,
         username,

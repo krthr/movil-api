@@ -62,6 +62,8 @@ class CourseController {
     const course = await Course.query()
       .where("id", id)
       .where("db_id", dbId)
+      .with("professor.person")
+      .with("students.person")
       .first();
 
     if (!course) {
