@@ -19,7 +19,7 @@ class Course extends Model {
     super.boot();
 
     this.addHook("beforeCreate", course => {
-      course.name = Faker.getRandomCourseName();
+      course.name = Faker.getRandomCourseName().toUpperCase();
     });
 
     this.addHook("afterCreate", async course => {
@@ -29,7 +29,7 @@ class Course extends Model {
         Student.create(generalData),
         Student.create(generalData),
         Professor.create(generalData)
-      ])
+      ]);
     });
   }
 }
