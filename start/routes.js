@@ -23,25 +23,7 @@ Route.get("/", async () => {
 });
 
 Route.group(() => {
-  Route.get("restart", async () => {
-    const course =  await use("App/Models/Person").create();
-    
-    const personT = await use("App/Models/Person").create({ name: "Andres" });
-    const personS1 = await use("App/Models/Person").create({ name: "Andres" });
-    const personS2 = await use("App/Models/Person").create({ name: "Andres" });
-    const personS3 = await use("App/Models/Person").create({ name: "Andres" });
-    const professor = await use("App/Models/Professor").create();
-    await professor.person().associate(personT)
-
-    return {
-      result: true,
-      professor: await use("App/Models/Professor")
-        .query()
-        .where("id", professor.id)
-        .with("person")
-        .fetch()
-    };
-  });
+  Route.get("/restart", "CourseController.restart");
 
   Route.resource("courses", "CourseController").only([
     "index",

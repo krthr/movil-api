@@ -3,21 +3,33 @@
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Model = use("Model");
 const Faker = use("Faker");
+const Student = use("App/Models/Student");
+const Professor = use("App/Models/Professor");
 
 class Course extends Model {
   professor() {
-    this.hasOne("App/Models/Professor");
+    return this.hasOne("App/Models/Professor");
   }
 
   students() {
-    this.hasMany("App/Models/Student");
+    return this.hasMany("App/Models/Student");
   }
 
   static boot() {
     super.boot();
 
     this.addHook("beforeCreate", course => {
-      course.name = Faker.getRandomName();
+      course.name = Faker.getRandomCourseName();
+    });
+
+    this.addHook("afterCreate", async course => {
+      const generalData = { course_id: course.id, db_id: course.db_id };
+      await Promise.all([
+        Student.create(generalData),
+        Student.create(generalData),
+        Student.create(generalData),
+        Professor.create(generalData)
+      ])
     });
   }
 }
