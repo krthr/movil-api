@@ -25,13 +25,12 @@ class CourseController {
 
     const courses = await Course.query()
       .where("db_id", dbId)
-      .with('students.person')
-      .with('professor.person')
+      .with("students.person")
+      .with("professor.person")
       .paginate(page);
 
     return courses;
   }
-
 
   /**
    * Create/save a new course.
@@ -42,15 +41,27 @@ class CourseController {
    * @param {Response} ctx.response
    */
   async store({ params, request, response }) {
-    const { dbId } = params
+    const { dbId } = params;
     const course = await Course.create({ db_id: dbId });
-    return course
+    return course;
   }
 
+  /**
+   *
+   * TODO: Eliminar profesores y estudiantes del curso
+   */
   async restart({ params, request, response }) {
-    const { dbId } = params
-    await Course.query().where({ db_id: dbId }).delete();
-    return this.store({ params, request, response })
+    const { dbId } = params;
+
+    await Course.query()
+      .where({ db_id: dbId })
+      .delete();
+
+    await this.store({ params, request, response });
+
+    return {
+      result: true
+    };
   }
 
   /**

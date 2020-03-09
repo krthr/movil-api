@@ -30,4 +30,6 @@ Route.group(() => {
     "store",
     "show"
   ]);
+
+  Route.resource("professors", "ProfessorController").only(["index", "show"]);
 }).prefix(":dbId");
