@@ -24,12 +24,15 @@ Route.get("/", async () => {
 
 Route.group(() => {
   Route.get("/restart", "CourseController.restart");
-
   Route.resource("courses", "CourseController").only([
     "index",
     "store",
     "show"
   ]);
-
   Route.resource("professors", "ProfessorController").only(["index", "show"]);
+  Route.resource("students", "StudentController").only([
+    "index",
+    "store",
+    "show"
+  ]);
 }).prefix(":dbId");
