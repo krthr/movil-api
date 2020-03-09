@@ -12,9 +12,8 @@ class FakerProvider extends ServiceProvider {
    */
   register() {
     this.app.singleton("Faker", () => {
-      const a = require("./index");
-
-      return new a();
+      const Faker = require("./index");
+      return new Faker();
     });
   }
 

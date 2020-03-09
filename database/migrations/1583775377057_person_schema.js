@@ -17,8 +17,8 @@ class PersonSchema extends Schema {
       table.string("address_city");
       table.string("address_state");
       table.string("address_country");
-      table.float("address_get_lat");
-      table.float("address_get_lng");
+      table.float("address_geo_lat");
+      table.float("address_geo_lng");
       table.string("address_zipcode");
 
       table.string("phone");
