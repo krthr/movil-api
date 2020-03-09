@@ -24,10 +24,14 @@ Route.get("/", async () => {
 
 Route.group(() => {
   Route.get("restart", async () => {
-    const person = await use("App/Models/Person").create({ name: "Sonwil" });
-
+    const course =  await use("App/Models/Person").create();
+    
+    const personT = await use("App/Models/Person").create({ name: "Andres" });
+    const personS1 = await use("App/Models/Person").create({ name: "Andres" });
+    const personS2 = await use("App/Models/Person").create({ name: "Andres" });
+    const personS3 = await use("App/Models/Person").create({ name: "Andres" });
     const professor = await use("App/Models/Professor").create();
-    await professor.person().associate(person);
+    await professor.person().associate(personT)
 
     return {
       result: true,
