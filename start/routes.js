@@ -22,26 +22,24 @@ Route.get("/", async () => {
   };
 });
 
-Route.group("", () => {
-
-  Route.get("/", () => {
-    return use("Faker").random();
-  });
-
+Route.group(() => {
   Route.get("restart", async () => {
     const person = await use("App/Models/Person").create({ name: "Sonwil" });
 
     const professor = await use("App/Models/Professor").create();
-    await professor.person().associate(person)
+    await professor.person().associate(person);
 
     return {
       result: true,
-      professor: await use('App/Models/Professor').query().where('id', professor.id).with('person').fetch(),
+      professor: await use("App/Models/Professor")
+        .query()
+        .where("id", professor.id)
+        .with("person")
+        .fetch()
     };
   });
 
   Route.resource("courses", "CourseController")
     .only(["index", "store", "show"])
     .validator(new Map([[["courses.store"], ["Course"]]]));
-
 }).prefix(":dbId");
