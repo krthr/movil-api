@@ -40,11 +40,9 @@ class CourseController {
    */
   async store({ request, response }) {
     const { dbId } = request.params;
-    const { name } = request.post();
 
     const course = await Course.create({
-      db_id: dbId,
-      name
+      db_id: dbId
     });
 
     return course;

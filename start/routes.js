@@ -39,7 +39,9 @@ Route.group(() => {
     };
   });
 
-  Route.resource("courses", "CourseController")
-    .only(["index", "store", "show"])
-    .validator(new Map([[["courses.store"], ["Course"]]]));
+  Route.resource("courses", "CourseController").only([
+    "index",
+    "store",
+    "show"
+  ]);
 }).prefix(":dbId");
