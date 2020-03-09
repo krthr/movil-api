@@ -24,7 +24,7 @@ class Person extends Model {
           zipcode
         },
         phone
-      } = Faker.random();
+      } = Faker.getRandomPerson();
 
       person.name = name;
       person.username = username;

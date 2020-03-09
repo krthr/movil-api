@@ -5,7 +5,7 @@ const faker = require("faker");
 class Faker {
   constructor() {}
 
-  random() {
+  getRandomPerson() {
     const { name, username, address, phone } = faker.helpers.createCard();
     const { city, state, country, geo, zipcode, streetA: street } = address;
     const birthday = faker.date.between("01/01/1980", "01/01/2002");
@@ -19,6 +19,11 @@ class Faker {
       address: { street, city, state, country, geo, zipcode },
       phone
     };
+  }
+
+  getRandomCourseName() {
+    const { adjective, ingverb, noun } = faker.hacker;
+    return `${ingverb()} ${adjective()} ${noun()}`;
   }
 }
 
