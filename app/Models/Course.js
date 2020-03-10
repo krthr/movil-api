@@ -4,6 +4,8 @@
 const Model = use("Model");
 const Faker = use("Faker");
 const Student = use("App/Models/Student");
+
+/** @type {typeof import('../Models/Professor')} */
 const Professor = use("App/Models/Professor");
 
 class Course extends Model {
