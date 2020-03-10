@@ -8,8 +8,16 @@ class StudentSchema extends Schema {
     this.create("students", table => {
       table.increments();
       table.string("db_id");
-      table.integer("course_id").unsigned();
-      table.integer("person_id").unsigned();
+      table
+        .integer("course_id")
+        .unsigned()
+        .references("id")
+        .inTable("courses");
+      table
+        .integer("person_id")
+        .unsigned()
+        .references("id")
+        .inTable("people");
       table.timestamps();
     });
   }

@@ -7,12 +7,10 @@ class PersonSchema extends Schema {
   up() {
     this.create("people", table => {
       table.increments();
-
       table.string("name");
       table.string("username");
       table.date("birthday");
       table.string("email");
-
       table.string("address_street");
       table.string("address_city");
       table.string("address_state");
@@ -20,9 +18,7 @@ class PersonSchema extends Schema {
       table.float("address_geo_lat");
       table.float("address_geo_lng");
       table.string("address_zipcode");
-
       table.string("phone");
-
       table.timestamps();
     });
   }

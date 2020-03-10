@@ -7,10 +7,8 @@ class CourseSchema extends Schema {
   up() {
     this.create("courses", table => {
       table.increments();
-
       table.string("db_id");
       table.string("name");
-
       table.timestamps();
     });
   }

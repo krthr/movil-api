@@ -4,6 +4,9 @@
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
+const NotFoundException = use("App/Exceptions/NotFoundException");
+const Student = use("App/Models/Student");
+
 /**
  * Resourceful controller for interacting with students
  */
@@ -15,9 +18,18 @@ class StudentController {
    * @param {object} ctx
    * @param {Request} ctx.request
    * @param {Response} ctx.response
-   * @param {View} ctx.view
    */
-  async index({ request, response, view }) {}
+  async index({ params, request, response }) {
+    const { dbId } = params;
+    const { page } = request.get();
+
+    const students = await Student.query()
+      .where("db_id", dbId)
+      .with("person")
+      .paginate(page);
+
+    return students;
+  }
 
   /**
    * Create/save a new student.
@@ -27,7 +39,17 @@ class StudentController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store({ request, response }) {}
+  async store({ params, request, response }) {
+    const { dbId } = params;
+    const { courseId } = request.post();
+
+    const student = await Student.create({
+      db_id: dbId,
+      course_id: courseId
+    });
+
+    return student;
+  }
 
   /**
    * Display a single student.
@@ -36,9 +58,22 @@ class StudentController {
    * @param {object} ctx
    * @param {Request} ctx.request
    * @param {Response} ctx.response
-   * @param {View} ctx.view
    */
-  async show({ params, request, response, view }) {}
+  async show({ params, request, response }) {
+    const { dbId, id } = params;
+
+    const student = await Student.query()
+      .where("id", id)
+      .where("db_id", dbId)
+      .with("person")
+      .first();
+
+    if (!student) {
+      throw new NotFoundException();
+    }
+
+    return student;
+  }
 }
 
 module.exports = StudentController;
