@@ -13,13 +13,15 @@ class ProfessorSchema extends Schema {
         .unsigned()
         .references("id")
         .inTable("people")
-        .notNullable();
+        .notNullable()
+        .onDelete("CASCADE");
       table
         .integer("course_id")
         .unsigned()
         .references("id")
         .inTable("courses")
-        .notNullable();
+        .notNullable()
+        .onDelete("CASCADE");
       table.timestamps();
     });
   }
