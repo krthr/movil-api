@@ -7,17 +7,19 @@ class ProfessorSchema extends Schema {
   up() {
     this.create("professors", table => {
       table.increments();
-      table.string("db_id");
+      table.string("db_id").notNullable();
       table
         .integer("person_id")
         .unsigned()
         .references("id")
-        .inTable("people");
+        .inTable("people")
+        .notNullable();
       table
         .integer("course_id")
         .unsigned()
         .references("id")
-        .inTable("courses");
+        .inTable("courses")
+        .notNullable();
       table.timestamps();
     });
   }
