@@ -21,6 +21,8 @@ Route.get("/", async () => {
     greeting: "Hello world in JSON"
   };
 });
+Route.post('/signin','AuthController.signin')
+Route.post('/signup','AuthController.signup')
 
 Route.group(() => {
   Route.get("/restart", "CourseController.restart");
