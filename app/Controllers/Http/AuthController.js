@@ -1,7 +1,5 @@
 'use strict'
 const { validate } = use('Validator');
-const jwt = require('jsonwebtoken');
-const Env = use('Env');
 const User = use('App/Models/User');
 class AuthController {
 
@@ -12,9 +10,9 @@ class AuthController {
     }
 
     async signup({ request, response }) {
-        //username -> dbprefix validate unique
         const validation = await validate(request.all(), {
             username: 'required',
+            dbprefix: 'required',
             email: 'required|email',
             password: 'required|min:4',
         })
@@ -30,11 +28,8 @@ class AuthController {
         const user = await User.create({
             email: request.input('email'),
             username: request.input('username'),
+            dbprefix: request.input('dbprefix'),
             password: request.input('password'),
-        });
-
-        const token = jwt.sign({ email: user.email }, Env.get('SECRET'), {
-            expiresIn: 60 * 60 * 24 * 3,
         });
 
         return this.signin(...arguments)

@@ -18,24 +18,18 @@ class CourseController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async index({ params, request, response, auth }) {
-    try {
-      await auth.check()
+  async index({ params, request, response }) {
       
-      const { dbId } = params;
-      const { page = 1 } = request.get();
+    const { dbId } = params;
+    const { page = 1 } = request.get();
+  
+    const courses = await Course.query()
+      .where("db_id", dbId)
+      .with("students.person")
+      .with("professor.person")
+      .paginate(page);
 
-      const courses = await Course.query()
-        .where("db_id", dbId)
-        .with("students.person")
-        .with("professor.person")
-        .paginate(page);
-
-      return courses;
-
-    } catch (error) {
-      response.send('Missing or invalid jwt token')
-    }
+    return courses;
 
   }
 

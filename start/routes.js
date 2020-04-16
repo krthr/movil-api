@@ -37,4 +37,4 @@ Route.group(() => {
     "store",
     "show"
   ]);
-}).prefix(":dbId");
+}).prefix(":dbId").middleware(['userPrivilegesDetector']);
