@@ -5,7 +5,7 @@ const Schema = use("Schema");
 
 class CourseSchema extends Schema {
   up() {
-    this.create("courses", table => {
+    this.create("courses", (table) => {
       table.increments();
       table.string("db_id").notNullable();
       table.string("name").notNullable();
