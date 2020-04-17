@@ -3,8 +3,10 @@ const { validate } = use("Validator");
 const User = use("App/Models/User");
 class AuthController {
   async signin({ request, response, auth }) {
-    const { email, password } = request.all();
-    const token = await auth.attempt(email, password);
+    const { email, password, username } = request.all();
+    const token = await auth.attempt(email, password, {
+      username,
+    });
     return response.send(token);
   }
 
