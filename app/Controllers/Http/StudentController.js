@@ -1,5 +1,7 @@
 "use strict";
 
+const { validate } = use("Validator");
+
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 
@@ -42,9 +44,17 @@ class StudentController {
     const { dbId } = params;
     const { courseId } = request.post();
 
+    const validation = await validate(request.all(), {
+      dbId: "required",
+    });
+
+    if (validation.fails()) {
+      return response.send(validation.messages());
+    }
+
     const student = await Student.create({
       db_id: dbId,
-      course_id: courseId
+      course_id: courseId,
     });
 
     return student;

@@ -39,9 +39,11 @@ class CourseController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store({ params }) {
+  async store({ params, request }) {
     const { dbId } = params;
+
     const course = await Course.create({ db_id: dbId });
+
     return course;
   }
 
