@@ -12,14 +12,15 @@ class UserPrivilegesDetector {
   async handle({ request, params, response, auth }, next) {
     try {
       const { dbId } = params;
-      var userJwt = await auth.getUser();
-      if (userJwt.username.toString() == dbId) {
+      const userJwt = await auth.getUser();
+
+      if (userJwt.username == dbId) {
         await next();
       } else {
         response.send("No Privileges To Access This Information");
       }
     } catch (error) {
-      console.log(error);
+      console.log({ error });
       response.send("Credentials missing");
     }
   }

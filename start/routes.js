@@ -18,23 +18,25 @@ const Route = use("Route");
 
 Route.get("/", async () => {
   return {
-    greeting: "Hello world in JSON"
+    greeting: "Hello world in JSON",
   };
 });
-Route.post('/signin','AuthController.signin')
-Route.post('/signup','AuthController.signup')
+Route.post("/signin", "AuthController.signin");
+Route.post("/signup", "AuthController.signup");
 
 Route.group(() => {
   Route.get("/restart", "CourseController.restart");
   Route.resource("courses", "CourseController").only([
     "index",
     "store",
-    "show"
+    "show",
   ]);
   Route.resource("professors", "ProfessorController").only(["index", "show"]);
   Route.resource("students", "StudentController").only([
     "index",
     "store",
-    "show"
+    "show",
   ]);
-}).prefix(":dbId").middleware(['userPrivilegesDetector']);
+})
+  .prefix(":dbId")
+  .middleware(["userPrivilegesDetector"]);
