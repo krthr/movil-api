@@ -26,6 +26,7 @@ class ProfessorController {
     const professors = await Professor.query()
       .where("db_id", dbId)
       .with("course")
+      .with("person")
       .paginate(page);
 
     return professors;
@@ -47,6 +48,7 @@ class ProfessorController {
       .where("id", id)
       .where("db_id", dbId)
       .with("course.students")
+      .with("person")
       .first();
 
     if (!professor) {
