@@ -23,6 +23,9 @@ Route.get("/", async () => {
 });
 Route.post("/signin", "AuthController.signin");
 Route.post("/signup", "AuthController.signup");
+Route.post("/isLogged", "AuthController.isLogged").middleware([
+  "userPrivilegesDetector",
+]);
 
 Route.group(() => {
   Route.get("/restart", "CourseController.restart");

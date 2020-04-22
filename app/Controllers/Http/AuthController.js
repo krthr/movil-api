@@ -43,6 +43,12 @@ class AuthController {
 
     return this.signin(...arguments);
   }
+
+  async isLogged({ request, response }) {
+    return response.json({
+      hi: Date.now(),
+    });
+  }
 }
 
 module.exports = AuthController;
