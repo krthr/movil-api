@@ -10,14 +10,21 @@ This is the boilerplate for creating an API server in AdonisJs, it comes pre-con
 
 ## Setup
 
-Use the adonis command to install the blueprint
+1. Create an `.env` file with the following variables:
 
-```bash
-adonis new yardstick --api-only
+```env
+APP_KEY=[random string]
+HOST=127.0.0.1
+PORT=[port]
+DB_CONNECTION=pg
+PG_CONNECTION_STRING=[string connection to Postgres database]
 ```
 
-or manually clone the repo and then run `npm install`.
+2. Start the server:
 
+```bash
+adonis start 
+```
 
 ### Migrations
 
