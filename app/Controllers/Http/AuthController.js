@@ -40,7 +40,7 @@ class AuthController {
     const userFound = await User.findBy("email", request.input("email"));
 
     if (userFound) {
-      return response.send("user already exists");
+      return response.status(409).send("user already exists");
     }
 
     const user = await User.create({
