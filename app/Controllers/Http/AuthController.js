@@ -2,6 +2,15 @@
 const { validate } = use("Validator");
 const User = use("App/Models/User");
 class AuthController {
+  async checkToken({ request, response, auth }) {
+    try {
+      await auth.check()
+      response.json({"valid":true})
+    } catch (error) {
+      response.json({"valid":false})
+    }
+  }
+  
   async signin({ request, response, auth }) {
     const { email, password } = request.all();
 

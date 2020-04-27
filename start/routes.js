@@ -23,6 +23,7 @@ Route.get("/", async () => {
 });
 Route.post("/signin", "AuthController.signin");
 Route.post("/signup", "AuthController.signup");
+Route.post("/check/token", "AuthController.checkToken");
 Route.post("/isLogged", "AuthController.isLogged").middleware([
   "userPrivilegesDetector",
 ]);
