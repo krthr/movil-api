@@ -11,12 +11,22 @@ class UserPrivilegesDetector {
    */
   async handle({ request, params, response, auth }, next) {
     const { dbId } = params;
-    const userJwt = await auth.getUser();
+    let userJwt;
 
-    if (userJwt.username == dbId) {
+    try {
+      userJwt = await auth.getUser();
+    } catch (e) {
+      return response.status(403).json({
+        error: "Token inválido.",
+      });
+    }
+
+    if (userJwt && userJwt.username == dbId) {
       await next();
     } else {
-      response.send("No Privileges To Access This Information");
+      response.status(403).json({
+        error: "No tiene acceso a esta información.",
+      });
     }
   }
 }
