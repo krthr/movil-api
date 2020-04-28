@@ -78,7 +78,7 @@ class StudentController {
       .first();
 
     if (!student) {
-      throw new NotFoundException();
+      throw new NotFoundException(id);
     }
 
     return student;

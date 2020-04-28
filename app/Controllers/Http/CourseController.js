@@ -82,7 +82,7 @@ class CourseController {
       .first();
 
     if (!course) {
-      throw new NotFoundException();
+      throw new NotFoundException(id);
     }
 
     return course;

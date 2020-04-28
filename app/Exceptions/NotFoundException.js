@@ -7,8 +7,9 @@ const status = 404;
 const code = "E_NOT_FOUND";
 
 class NotFoundException extends HttpException {
-  constructor() {
+  constructor(resourceId) {
     super(message, status, code);
+    this.resourceId = resourceId;
   }
 
   /**
@@ -16,11 +17,7 @@ class NotFoundException extends HttpException {
    */
   handle(error, { response }) {
     response.status(404).json({
-      error: {
-        message,
-        status,
-        code
-      }
+      error: "El recurso solicitado no existe. ID=" + this.resourceId,
     });
   }
 }

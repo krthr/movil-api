@@ -52,7 +52,7 @@ class ProfessorController {
       .first();
 
     if (!professor) {
-      throw new NotFoundException();
+      throw new NotFoundException(id);
     }
 
     return professor;
