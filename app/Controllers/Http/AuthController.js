@@ -1,5 +1,4 @@
 "use strict";
-const { validate } = use("Validator");
 const User = use("App/Models/User");
 class AuthController {
   async checkToken({ request, response, auth }) {
@@ -14,34 +13,37 @@ class AuthController {
   async signin({ request, response, auth }) {
     const { email, password } = request.all();
 
-    const token = await auth.attempt(email, password);
+    try {
+      const { type, token } = await auth.attempt(email, password);
+      const user = await User.findBy("email", email);
 
-    const user = await User.findBy("email", email);
+      return response.json({
+        type,
+        token,
+        username: user.username,
+        name: user.name,
+        email: user.email,
+      });
+    } catch (e) {
+      if (e.name === "UserNotFoundException") {
+        return response.status(403).json({
+          error: "No existe usuario con correo " + email,
+        });
+      }
 
-    return response.json({
-      ...token,
-      username: user.username,
-      name: user.name,
-      email: user.email,
-    });
+      response.status(403).json({
+        error: "Contraseña inválida.",
+      });
+    }
   }
 
   async signup({ request, response }) {
-    const validation = await validate(request.all(), {
-      username: "required",
-      email: "required|email",
-      name: "required|min:2",
-      password: "required|min:4",
-    });
-
-    if (validation.fails()) {
-      return response.send(validation.messages());
-    }
-
     const userFound = await User.findBy("email", request.input("email"));
 
     if (userFound) {
-      return response.status(409).send("user already exists");
+      return response.status(409).send({
+        error: "El correo electrónico ya se encuentra en uso.",
+      });
     }
 
     const user = await User.create({

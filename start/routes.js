@@ -21,8 +21,10 @@ Route.get("/", async () => {
     greeting: "Hello world in JSON",
   };
 });
-Route.post("/signin", "AuthController.signin");
-Route.post("/signup", "AuthController.signup");
+
+Route.post("/signin", "AuthController.signin").validator("Login");
+Route.post("/signup", "AuthController.signup").validator("Signup");
+
 Route.post("/check/token", "AuthController.checkToken");
 Route.post("/isLogged", "AuthController.isLogged").middleware([
   "userPrivilegesDetector",
