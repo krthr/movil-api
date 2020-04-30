@@ -24,11 +24,7 @@ Route.get("/", async () => {
 
 Route.post("/signin", "AuthController.signin").validator("Login");
 Route.post("/signup", "AuthController.signup").validator("Signup");
-
 Route.post("/check/token", "AuthController.checkToken");
-Route.post("/isLogged", "AuthController.isLogged").middleware([
-  "userPrivilegesDetector",
-]);
 
 Route.group(() => {
   Route.get("/restart", "CourseController.restart");

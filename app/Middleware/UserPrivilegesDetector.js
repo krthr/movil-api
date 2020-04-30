@@ -16,7 +16,7 @@ class UserPrivilegesDetector {
     try {
       userJwt = await auth.getUser();
     } catch (e) {
-      return response.status(403).json({
+      return response.status(401).json({
         error: "Token inválido.",
       });
     }
