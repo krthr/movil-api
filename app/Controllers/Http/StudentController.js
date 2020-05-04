@@ -50,14 +50,6 @@ class StudentController {
     const { dbId } = params;
     const { courseId } = request.post();
 
-    const validation = await validate(request.all(), {
-      dbId: "required",
-    });
-
-    if (validation.fails()) {
-      return response.send(validation.messages());
-    }
-
     const student = await Student.create({
       db_id: dbId,
       course_id: courseId,
