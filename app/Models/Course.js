@@ -20,19 +20,23 @@ class Course extends Model {
   static boot() {
     super.boot();
 
-    this.addHook("beforeCreate", course => {
+    this.addHook("beforeCreate", (course) => {
       course.name = Faker.getRandomCourseName().toUpperCase();
     });
 
-    this.addHook("afterCreate", async course => {
+    this.addHook("afterCreate", async (course) => {
       const generalData = { course_id: course.id, db_id: course.db_id };
       await Promise.all([
         Student.create(generalData),
         Student.create(generalData),
         Student.create(generalData),
-        Professor.create(generalData)
+        Professor.create(generalData),
       ]);
     });
+  }
+
+  static get hidden() {
+    return ["db_id", "created_at", "updated_at"];
   }
 }
 
