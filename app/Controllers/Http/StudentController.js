@@ -47,27 +47,35 @@ class StudentController {
    * @param {Response} ctx.response
    */
   async store({ params, request, response }) {
-    const { dbId } = params;
-    const { courseId } = request.post();
+    try {
+      const { dbId } = params;
+      const { courseId } = request.post();
 
-    const temp = await Student.create({
-      db_id: dbId,
-      course_id: courseId,
-    });
+      const temp = await Student.create({
+        db_id: dbId,
+        course_id: courseId,
+      });
 
-    const student = await Student.query()
-      .where("id", temp.id)
-      .where("db_id", dbId)
-      .with("person")
-      .first();
+      const student = await Student.query()
+        .where("id", temp.id)
+        .where("db_id", dbId)
+        .with("person")
+        .first();
 
-    const { id, name, email, username } = student.toJSON();
-    return {
-      id,
-      name,
-      email,
-      username,
-    };
+      const {
+        id,
+        person: { name, email, username },
+      } = student.toJSON();
+
+      return {
+        id,
+        name,
+        email,
+        username,
+      };
+    } catch (e) {
+      response.status(400).json({ error: "ID de curso inválido." });
+    }
   }
 
   /**

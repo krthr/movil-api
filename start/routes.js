@@ -34,11 +34,9 @@ Route.group(() => {
     "show",
   ]);
   Route.resource("professors", "ProfessorController").only(["index", "show"]);
-  Route.resource("students", "StudentController").only([
-    "index",
-    "store",
-    "show",
-  ]);
+  Route.resource("students", "StudentController")
+    .only(["index", "store", "show"])
+    .validator(new Map([[["students.store"], ["StudentStore"]]]));
 })
   .prefix(":dbId")
   .middleware(["userPrivilegesDetector"]);
