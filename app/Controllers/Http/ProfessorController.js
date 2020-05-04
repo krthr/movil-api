@@ -61,20 +61,18 @@ class ProfessorController {
       throw new NotFoundException(id);
     }
 
-    professor = professor.toJSON();
-
-    const { course_id } = professor;
     const {
-      name,
-      username,
-      email,
-      phone,
-      birthday,
-      address_country,
-      address_city,
-    } = professor.person;
-
-    console.log(professor);
+      course_id,
+      professor: {
+        name,
+        username,
+        email,
+        phone,
+        birthday,
+        address_country,
+        address_city,
+      },
+    } = professor.toJSON();
 
     return {
       course_id,

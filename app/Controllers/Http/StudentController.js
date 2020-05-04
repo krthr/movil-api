@@ -28,7 +28,14 @@ class StudentController {
       .with("person")
       .fetch();
 
-    return students;
+    return students
+      .toJSON()
+      .map(({ id, person: { name, email, username } }) => ({
+        id,
+        name,
+        email,
+        username,
+      }));
   }
 
   /**
@@ -70,7 +77,7 @@ class StudentController {
   async show({ params, request, response }) {
     const { dbId, id } = params;
 
-    const student = await Student.query()
+    let student = await Student.query()
       .where("id", id)
       .where("db_id", dbId)
       .with("person")
@@ -80,7 +87,30 @@ class StudentController {
       throw new NotFoundException(id);
     }
 
-    return student;
+    student = student.toJSON();
+    const {
+      course_id,
+      person: {
+        name,
+        username,
+        phone,
+        email,
+        birthday,
+        address_country,
+        address_city,
+      },
+    } = student;
+
+    return {
+      course_id,
+      name,
+      username,
+      phone,
+      email,
+      city: address_city,
+      country: address_country,
+      birthday: new Date(birthday),
+    };
   }
 }
 
