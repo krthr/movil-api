@@ -55,7 +55,7 @@ class StudentController {
       course_id: courseId,
     });
 
-    const student = await await Student.query()
+    const student = await Student.query()
       .where("id", temp.id)
       .where("db_id", dbId)
       .with("person")
