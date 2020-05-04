@@ -23,7 +23,7 @@ class CourseController {
 
     const courses = await Course.query()
       .where("db_id", dbId)
-      .with("students.person")
+      .with("students")
       .with("professor.person")
       .fetch();
 
@@ -45,8 +45,30 @@ class CourseController {
    */
   async store({ params, request }) {
     const { dbId } = params;
-    const course = await Course.create({ db_id: dbId });
-    return course;
+
+    const temp = await Course.create({ db_id: dbId });
+    let course = await Course.query()
+      .where("id", temp.id)
+      .where("db_id", dbId)
+      .with("professor.person")
+      .with("students")
+      .first();
+
+    const {
+      name,
+      id,
+      professor: {
+        person: { name: professorName },
+      },
+      students,
+    } = course.toJSON();
+
+    return {
+      id,
+      name,
+      professor: professorName,
+      students: students.length,
+    };
   }
 
   /**
