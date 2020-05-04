@@ -50,12 +50,24 @@ class StudentController {
     const { dbId } = params;
     const { courseId } = request.post();
 
-    const student = await Student.create({
+    const temp = await Student.create({
       db_id: dbId,
       course_id: courseId,
     });
 
-    return student;
+    const student = await await Student.query()
+      .where("id", temp.id)
+      .where("db_id", dbId)
+      .with("person")
+      .first();
+
+    const { id, name, email, username } = student.toJSON();
+    return {
+      id,
+      name,
+      email,
+      username,
+    };
   }
 
   /**
