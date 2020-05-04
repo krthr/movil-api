@@ -15,10 +15,14 @@ class Student extends Model {
   static boot() {
     super.boot();
 
-    this.addHook("beforeCreate", async student => {
+    this.addHook("beforeCreate", async (student) => {
       const person = await Person.create();
       student.person_id = person.id;
     });
+  }
+
+  static get hidden() {
+    return ["db_id", "person_id", "created_at", "updated_at"];
   }
 }
 
