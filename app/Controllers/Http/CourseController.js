@@ -20,13 +20,12 @@ class CourseController {
    */
   async index({ params, request }) {
     const { dbId } = params;
-    const { page = 1 } = request.get();
 
     const courses = await Course.query()
       .where("db_id", dbId)
       .with("students.person")
       .with("professor.person")
-      .paginate(page);
+      .fetch();
 
     return courses;
   }
@@ -41,9 +40,7 @@ class CourseController {
    */
   async store({ params, request }) {
     const { dbId } = params;
-
     const course = await Course.create({ db_id: dbId });
-
     return course;
   }
 
@@ -55,7 +52,6 @@ class CourseController {
     const { dbId } = params;
 
     await Course.query().where({ db_id: dbId }).delete();
-
     await this.store({ params, request, response });
 
     return {

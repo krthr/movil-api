@@ -20,14 +20,13 @@ class StudentController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async index({ params, request, response }) {
+  async index({ params }) {
     const { dbId } = params;
-    const { page } = request.get();
 
     const students = await Student.query()
       .where("db_id", dbId)
       .with("person")
-      .paginate(page);
+      .fetch();
 
     return students;
   }

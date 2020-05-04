@@ -19,15 +19,14 @@ class ProfessorController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index({ params, request, response }) {
+  async index({ params }) {
     const { dbId } = params;
-    const { page } = request.get();
 
     const professors = await Professor.query()
       .where("db_id", dbId)
       .with("course")
       .with("person")
-      .paginate(page);
+      .fetch();
 
     return professors;
   }
@@ -41,7 +40,7 @@ class ProfessorController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async show({ params, request, response }) {
+  async show({ params }) {
     const { dbId, id } = params;
 
     const professor = await Professor.query()
