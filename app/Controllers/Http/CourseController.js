@@ -27,7 +27,12 @@ class CourseController {
       .with("professor.person")
       .fetch();
 
-    return courses;
+    return courses.toJSON().map(({ id, name, professor, students }) => ({
+      id,
+      name,
+      professor: professor.person.name,
+      students: students.length,
+    }));
   }
 
   /**
@@ -70,7 +75,7 @@ class CourseController {
   async show({ params }) {
     const { dbId, id } = params;
 
-    const course = await Course.query()
+    let course = await Course.query()
       .where("id", id)
       .where("db_id", dbId)
       .with("professor.person")
@@ -81,17 +86,17 @@ class CourseController {
       throw new NotFoundException(id);
     }
 
-    const professorInfo = course.professor.person;
-    const students = course.students.map((student) => {
-      const { name, username, email } = student.person;
+    course = course.toJSON();
 
-      return {
-        id: student.id,
+    const professorInfo = course.professor.person;
+    const students = course.students.map(
+      ({ id, person: { name, username, email } }) => ({
+        id,
         name,
         username,
         email,
-      };
-    });
+      })
+    );
 
     return {
       name: course.name,
