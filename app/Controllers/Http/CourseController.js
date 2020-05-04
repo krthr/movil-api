@@ -81,7 +81,28 @@ class CourseController {
       throw new NotFoundException(id);
     }
 
-    return course;
+    const professorInfo = course.professor.person;
+    const students = course.students.map((student) => {
+      const { name, username, email } = student.person;
+
+      return {
+        id: student.id,
+        name,
+        username,
+        email,
+      };
+    });
+
+    return {
+      name: course.name,
+      professor: {
+        id: course.professor.id,
+        name: professorInfo.name,
+        username: professorInfo.username,
+        email: professorInfo.email,
+      },
+      students,
+    };
   }
 }
 
