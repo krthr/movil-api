@@ -74,6 +74,7 @@ class StudentController {
         username,
       };
     } catch (e) {
+      console.log(e);
       response.status(400).json({ error: "ID de curso inválido." });
     }
   }
